@@ -8,17 +8,27 @@ services:
     restart: always
     networks:
       - lan
-    ports:
-      - "80:8069"
+      - wan
     volumes:
       - web-data:/var/lib/odoo
-      - ./backup/odoo11/addons:/mnt/extra-addons
+      - extra-addons:/mnt/extra-addons
       #- ./config:/etc/odoo
     environment:
       #- HOST=db
       #- PORT=5432
       - USER=Oj8Du8
       - PASSWORD=koo4hah1Lus6bazo
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.http-odoo-museebolo-ch.rule=Host(`odoo.museebolo.ch`)
+      - traefik.http.routers.http-odoo-museebolo-ch.entryPoints=http
+      - traefik.http.routers.http-odoo-museebolo-ch.middlewares=https-redirect@file
+      - traefik.http.routers.https-odoo-museebolo-ch.tls=true
+      - traefik.http.routers.https-odoo-museebolo-ch.tls.certresolver=letsencrypt
+      - traefik.http.routers.https-odoo-museebolo-ch.entrypoints=https
+      - traefik.http.routers.https-odoo-museebolo-ch.middlewares=bolo-auth@file
+      - traefik.http.routers.https-odoo-museebolo-ch.rule=Host(`odoo.museebolo.ch`)
+      - traefik.http.services.http-odoo-museebolo-ch.loadbalancer.server.port=8069
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8069"]
       interval: 1m
@@ -53,6 +63,9 @@ volumes:
 networks:
   lan:
     driver: bridge
+  wan:
+    name: traefik_wan
+    external: true
 
 
 # vim: ft=yaml tw=80 et ts=2 sw=2 sts=2
