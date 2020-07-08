@@ -17,8 +17,8 @@ services:
     environment:
       #- HOST=db
       #- PORT=5432
-      - USER=Oj8Du8
-      - PASSWORD=koo4hah1Lus6bazo
+      - USER=<USER>
+      - PASSWORD=<PASSWORD>
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8069"]
       interval: 1m
@@ -33,8 +33,8 @@ services:
       - lan
     environment:
       - POSTGRES_DB=postgres
-      - POSTGRES_USER=Oj8Du8
-      - POSTGRES_PASSWORD=koo4hah1Lus6bazo
+      - POSTGRES_USER=<USER>
+      - POSTGRES_PASSWORD=<PASSWORD>
       - PGDATA=/var/lib/postgresql/data/pgdata
     volumes:
       - db-data:/var/lib/postgresql/data/pgdata
