@@ -11,7 +11,7 @@ services:
       - wan
     volumes:
       - web-data:/var/lib/odoo
-      - backup/vol:/mnt/extra-addons
+      - extra-addons:/mnt/extra-addons
       - config:/etc/odoo
     environment:
       - USER=user
