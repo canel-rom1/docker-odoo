@@ -8,17 +8,24 @@ services:
     restart: always
     networks:
       - lan
-    ports:
-      - "80:8069"
+      - wan
     volumes:
       - web-data:/var/lib/odoo
-      - ./backup/odoo11/addons:/mnt/extra-addons
-      #- ./config:/etc/odoo
+      - backup/vol:/mnt/extra-addons
+      - config:/etc/odoo
     environment:
-      #- HOST=db
-      #- PORT=5432
       - USER=<USER>
       - PASSWORD=<PASSWORD>
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.http-odoo-museebolo-ch.rule=Host(`<DOMAIN>`)
+      - traefik.http.routers.http-odoo-museebolo-ch.entryPoints=http
+      - traefik.http.routers.http-odoo-museebolo-ch.middlewares=https-redirect@file
+      - traefik.http.routers.https-odoo-museebolo-ch.tls=true
+      - traefik.http.routers.https-odoo-museebolo-ch.tls.certresolver=letsencrypt
+      - traefik.http.routers.https-odoo-museebolo-ch.entrypoints=https
+      - traefik.http.routers.https-odoo-museebolo-ch.rule=Host(`<DOMAIN>`)
+      - traefik.http.services.http-odoo-museebolo-ch.loadbalancer.server.port=8069
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8069"]
       interval: 1m
@@ -32,7 +39,6 @@ services:
     networks:
       - lan
     environment:
-      - POSTGRES_DB=postgres
       - POSTGRES_USER=<USER>
       - POSTGRES_PASSWORD=<PASSWORD>
       - PGDATA=/var/lib/postgresql/data/pgdata
@@ -49,10 +55,13 @@ volumes:
   web-data:
   db-data:
   extra-addons:
+  config:
 
 networks:
   lan:
     driver: bridge
+  wan:
+    name: wan
 
 
 # vim: ft=yaml tw=80 et ts=2 sw=2 sts=2

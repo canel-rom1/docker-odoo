@@ -1,5 +1,4 @@
 *.swp
 *.save
-backup
-addons
-config
+docker-compose.override.yml
+test
