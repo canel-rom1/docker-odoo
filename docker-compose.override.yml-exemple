@@ -3,16 +3,16 @@ version: '3.7'
 services:
   web:
     environment:
-      - USER=user
-      - PASSWORD=password
+      - USER=<USER>
+      - PASSWORD=<PASSWORD>
     labels:
-      - traefik.http.routers.http-odoo-museebolo-ch.rule=Host(`odoo.domain.tld`)
-      - traefik.http.routers.https-odoo-museebolo-ch.rule=Host(`odoo.domain.tld`)
+      - traefik.http.routers.http-odoo-museebolo-ch.rule=Host(`<DOMAIN>`)
+      - traefik.http.routers.https-odoo-museebolo-ch.rule=Host(`<DOMAIN>`)
 
   db:
     environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=<USER>
+      - POSTGRES_PASSWORD=<PASSWORD>
 
 
 # vim: ft=yaml tw=80 et ts=2 sw=2 sts=2

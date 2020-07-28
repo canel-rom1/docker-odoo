@@ -14,17 +14,17 @@ services:
       - backup/vol:/mnt/extra-addons
       - config:/etc/odoo
     environment:
-      - USER=<USER>
-      - PASSWORD=<PASSWORD>
+      - USER=user
+      - PASSWORD=password
     labels:
       - traefik.enable=true
-      - traefik.http.routers.http-odoo-museebolo-ch.rule=Host(`<DOMAIN>`)
+      - traefik.http.routers.http-odoo-museebolo-ch.rule=Host(`odoo.domain.tld`)
       - traefik.http.routers.http-odoo-museebolo-ch.entryPoints=http
       - traefik.http.routers.http-odoo-museebolo-ch.middlewares=https-redirect@file
       - traefik.http.routers.https-odoo-museebolo-ch.tls=true
       - traefik.http.routers.https-odoo-museebolo-ch.tls.certresolver=letsencrypt
       - traefik.http.routers.https-odoo-museebolo-ch.entrypoints=https
-      - traefik.http.routers.https-odoo-museebolo-ch.rule=Host(`<DOMAIN>`)
+      - traefik.http.routers.https-odoo-museebolo-ch.rule=Host(`odoo.domain.tld`)
       - traefik.http.services.http-odoo-museebolo-ch.loadbalancer.server.port=8069
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8069"]
@@ -39,8 +39,8 @@ services:
     networks:
       - lan
     environment:
-      - POSTGRES_USER=<USER>
-      - POSTGRES_PASSWORD=<PASSWORD>
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
       - PGDATA=/var/lib/postgresql/data/pgdata
     volumes:
       - db-data:/var/lib/postgresql/data/pgdata
